@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resto 577 - Admin CMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding: 0;
+            background-color: #121212;
+            color: #fff;
+        }
+
+        .admin-header {
+            background: #1e1e1e;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: #d4af37;
+            border-bottom-color: #d4af37;
+            font-weight: bold;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .item-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .admin-item {
+            background: #1e1e1e;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-form {
+            background: #1e1e1e;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-danger {
+            background-color: #ff4444;
+            color: white;
+            margin-left: 1rem;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Fix for select text visibility */
+        option {
+            background-color: #1e1e1e;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-header">
+        <h2 style="font-family: var(--font-heading);">Resto 577 CMS</h2>
+        <a href="index.html" target="_blank" class="btn-text">View Site &rarr;</a>
+    </div>
+
+    <div class="admin-container">
+
+        <!-- Auth Gate -->
+        <div id="auth-screen" style="text-align: center; margin-top: 4rem;">
+            <h3>Admin Access</h3>
+            <p style="color: #aaa; margin-bottom: 2rem;">Please sign in to manage content.</p>
+            <button class="btn" onclick="login()">Enter CMS</button>
+        </div>
+
+        <!-- CMS Content -->
+        <div id="cms-screen" style="display: none;">
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="switchTab('menu')">Menu Items</button>
+                <button class="tab-btn" onclick="switchTab('events')">Events</button>
+                <button class="tab-btn" onclick="seedDatabase()">Admin Tools (Seed DB)</button>
+            </div>
+
+            <!-- MENU TAB -->
+            <div id="tab-menu" class="admin-section active">
+                <div class="admin-form">
+                    <h3>Add / Edit Menu Item</h3>
+                    <input type="hidden" id="menu-id">
+                    <div class="form-row">
+                        <select id="menu-category" class="form-input">
+                            <!-- Populated by JS -->
+                            <option value="">Select Category...</option>
+                            <option value="Getting Started / Pour Commencer">Getting Started</option>
+                            <option value="Bowls / Bols">Bowls</option>
+                            <option value="Tacos">Tacos</option>
+                            <option value="Poutines">Poutines</option>
+                            <option value="Salads / Salades">Salads</option>
+                            <option value="Burgers & Sandwiches">Burgers & Sandwiches</option>
+                            <option value="Baskets 'N' Platters">Baskets 'N' Platters</option>
+                            <option value="Throwback Favourites">Throwback Favourites</option>
+                            <option value="Kids' Menu">Kids' Menu</option>
+                            <option value="Sides & Extras">Sides & Extras</option>
+                        </select>
+                        <input type="text" id="menu-name" class="form-input" placeholder="Item Name">
+                    </div>
+
+                    <input type="hidden" id="menu-image">
+
+                    <div style="margin-bottom: 1rem;">
+                        <input type="text" id="menu-price" class="form-input" placeholder="Price (e.g. $15)"
+                            style="width: 100%;">
+                    </div>
+
+                    <div
+                        style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <input type="file" id="menu-image-file" accept="image/*"
+                            style="display: block; width: 100%; margin-bottom: 0.5rem;">
+                        <span id="upload-status" style="font-size: 0.8rem; color: #aaa;">Select an image to
+                            upload.</span>
+                    </div>
+
+                    <textarea id="menu-desc" class="form-textarea" placeholder="Description"
+                        style="min-height: 80px; margin-bottom: 1rem;"></textarea>
+                    <button class="btn" onclick="saveMenuItem()">Save Item</button>
+                    <button class="btn-text" onclick="clearMenuForm()">Cancel</button>
+                </div>
+
+                <div id="menu-list" class="item-list">Loading items...</div>
+            </div>
+
+            <!-- EVENTS TAB -->
+            <div id="tab-events" class="admin-section">
+                <div class="admin-form">
+                    <h3>Add / Edit Event</h3>
+                    <input type="hidden" id="event-id">
+                    <div class="form-row">
+                        <input type="text" id="event-title" class="form-input"
+                            placeholder="Event Title (e.g. Wing Night)">
+                        <input type="text" id="event-date" class="form-input" placeholder="When? (e.g. Thursdays)">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="event-time" class="form-input" placeholder="Time (e.g. 4PM - Close)">
+                        <input type="text" id="event-icon" class="form-input" placeholder="Emoji Icon (e.g. 🍗)">
+                    </div>
+                    <textarea id="event-desc" class="form-textarea" placeholder="Description"
+                        style="min-height: 80px; margin-bottom: 1rem;"></textarea>
+                    <button class="btn" onclick="saveEvent()">Save Event</button>
+                    <button class="btn-text" onclick="clearEventForm()">Cancel</button>
+                </div>
+
+                <div id="events-list-admin" class="item-list">Loading events...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="status-bar">Action Successful</div>
+
+    <!-- Firebase Compat -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <!-- App Logic -->
+    <script src="script.js"></script> <!-- To get Initial Data -->
+    <script src="cms.js"></script>
+
+</body>
+
+</html>
