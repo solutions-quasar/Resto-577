@@ -635,6 +635,8 @@ h6 {
 .footer-col {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    /* Prevent logo stretching */
 }
 
 .footer-info {

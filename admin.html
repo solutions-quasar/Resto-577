@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resto 577 - Admin CMS</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
@@ -183,6 +184,27 @@
                     <button class="btn-text" onclick="clearMenuForm()">Cancel</button>
                 </div>
 
+                <!-- Search & Filter -->
+                <div
+                    style="display: flex; gap: 1rem; margin-bottom: 1rem; background: #1e1e1e; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="search-menu" class="form-input" placeholder="Search Menu..."
+                        oninput="renderAdminMenu()" style="margin-bottom: 0; flex: 1;">
+                    <select id="filter-menu-cat" class="form-input" onchange="renderAdminMenu()"
+                        style="margin-bottom: 0; flex: 1;">
+                        <option value="">All Categories</option>
+                        <option value="Getting Started / Pour Commencer">Getting Started</option>
+                        <option value="Bowls / Bols">Bowls</option>
+                        <option value="Tacos">Tacos</option>
+                        <option value="Poutines">Poutines</option>
+                        <option value="Salads / Salades">Salads</option>
+                        <option value="Burgers & Sandwiches">Burgers & Sandwiches</option>
+                        <option value="Baskets 'N' Platters">Baskets 'N' Platters</option>
+                        <option value="Throwback Favourites">Throwback Favourites</option>
+                        <option value="Kids' Menu">Kids' Menu</option>
+                        <option value="Sides & Extras">Sides & Extras</option>
+                    </select>
+                </div>
+
                 <div id="menu-list" class="item-list">Loading items...</div>
             </div>
 
@@ -204,6 +226,12 @@
                         style="min-height: 80px; margin-bottom: 1rem;"></textarea>
                     <button class="btn" onclick="saveEvent()">Save Event</button>
                     <button class="btn-text" onclick="clearEventForm()">Cancel</button>
+                </div>
+
+                <div
+                    style="margin-bottom: 1rem; background: #1e1e1e; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
+                    <input type="text" id="search-events" class="form-input" placeholder="Search Events..."
+                        oninput="renderAdminEvents()" style="margin-bottom: 0; width: 100%;">
                 </div>
 
                 <div id="events-list-admin" class="item-list">Loading events...</div>

@@ -49,8 +49,22 @@ function loadData() {
 
 // Render Admin Menu List
 function renderAdminMenu() {
+    const query = document.getElementById('search-menu')?.value.toLowerCase() || "";
+    const catFilter = document.getElementById('filter-menu-cat')?.value || "";
+
     const container = document.getElementById('menu-list');
-    container.innerHTML = allMenu.map(item => `
+    const filtered = allMenu.filter(item => {
+        const matchSearch = item.name.toLowerCase().includes(query) || (item.desc && item.desc.toLowerCase().includes(query));
+        const matchCat = catFilter ? item.category === catFilter : true;
+        return matchSearch && matchCat;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #aaa; padding: 2rem;">No items found.</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(item => `
     <div class="admin-item">
       <div>
         <strong style="color: #d4af37;">${item.name}</strong>
@@ -66,8 +80,19 @@ function renderAdminMenu() {
 
 // Render Admin Events List
 function renderAdminEvents() {
+    const query = document.getElementById('search-events')?.value.toLowerCase() || "";
     const container = document.getElementById('events-list-admin');
-    container.innerHTML = allEvents.map(item => `
+
+    const filtered = allEvents.filter(item => {
+        return item.title.toLowerCase().includes(query) || (item.desc && item.desc.toLowerCase().includes(query));
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align: center; color: #aaa; padding: 2rem;">No events found.</div>`;
+        return;
+    }
+
+    container.innerHTML = filtered.map(item => `
     <div class="admin-item">
       <div>
         <strong style="color: #d4af37;">${item.title}</strong>
