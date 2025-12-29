@@ -94,25 +94,23 @@ function render() {
   `;
   document.getElementById('hero').innerHTML = heroHTML;
 
+
   // Render Menu (formerly Services)
   const menuContainer = document.getElementById('menu-grid');
   if (menuContainer) {
-    // Render Menu (formerly Services)
-    const menuContainer = document.getElementById('menu-grid');
-    if (menuContainer) {
-      if (CONFIG.menu.length === 0) {
-        menuContainer.innerHTML = `<div style="text-align: center; padding: 4rem; color: #aaa;">
+    if (CONFIG.menu.length === 0) {
+      menuContainer.innerHTML = `<div style="text-align: center; padding: 4rem; color: #aaa;">
             <p>Loading menu items...</p>
             <small>(If this persists, please seed the database in CMS)</small>
         </div>`;
-      } else {
-        // Switch to a column layout for the menu instead of strict grid
-        menuContainer.style.display = 'block';
+    } else {
+      // Switch to a column layout for the menu instead of strict grid
+      menuContainer.style.display = 'block';
 
-        // 1. Render Menu Nav Pills
-        const navContainer = document.getElementById('menu-nav');
-        if (navContainer) {
-          navContainer.innerHTML = `
+      // 1. Render Menu Nav Pills
+      const navContainer = document.getElementById('menu-nav');
+      if (navContainer) {
+        navContainer.innerHTML = `
         <div style="position: relative; display: flex; align-items: center;">
           <button id="nav-prev" class="nav-scroll-btn prev" aria-label="Scroll Left" onclick="scrollNav(-1)">
             <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -132,10 +130,10 @@ function render() {
           </button>
         </div>
       `;
-        }
+      }
 
-        // 2. Render Menu Categories with IDs
-        menuContainer.innerHTML = CONFIG.menu.map((cat, index) => `
+      // 2. Render Menu Categories with IDs
+      menuContainer.innerHTML = CONFIG.menu.map((cat, index) => `
       <div id="cat-${index}" class="menu-category" style="margin-bottom: var(--space-6); scroll-margin-top: 140px;">
         <h3 style="color: var(--color-accent); border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; margin-bottom: 1.5rem; font-size: 1.5rem;">${cat.category}</h3>
         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-4);">
@@ -154,13 +152,13 @@ function render() {
         </div>
       </div>
     `).join('');
-      }
     }
+  }
 
-    // Render Reviews
-    const reviewsContainer = document.getElementById('reviews-list');
-    if (reviewsContainer) {
-      reviewsContainer.innerHTML = CONFIG.reviews.map(r => `
+  // Render Reviews
+  const reviewsContainer = document.getElementById('reviews-list');
+  if (reviewsContainer) {
+    reviewsContainer.innerHTML = CONFIG.reviews.map(r => `
       <div class="review-card">
         <div class="stars">★★★★★</div>
         <p>"${r.text}"</p>
@@ -171,14 +169,14 @@ function render() {
         <a href="${CONFIG.business.facebook}" target="_blank" rel="noopener" style="text-decoration: underline; color: var(--color-accent);">Read more on Facebook</a>
       </div>
     `;
-    }
+  }
 
-    // Render Why Us
-    const whyContainer = document.getElementById('why-list');
-    if (whyContainer) {
-      whyContainer.innerHTML = CONFIG.whyUs.map(item => {
-        if (item.image) {
-          return `
+  // Render Why Us
+  const whyContainer = document.getElementById('why-list');
+  if (whyContainer) {
+    whyContainer.innerHTML = CONFIG.whyUs.map(item => {
+      if (item.image) {
+        return `
           <div class="card" style="position: relative; overflow: hidden; height: 200px; display: flex; align-items: flex-end; padding: 0;">
             <img src="${item.image}" alt="${item.title}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.7;">
             <div style="position: relative; z-index: 2; padding: var(--space-3); width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);">
@@ -186,19 +184,19 @@ function render() {
             </div>
           </div>
         `;
-        }
-        return `
+      }
+      return `
         <div class="card" style="text-align: center; display: flex; align-items: center; justify-content: center; height: 100px;">
           <h4 style="color: var(--color-accent); margin: 0;">${item.title}</h4>
         </div>
       `;
-      }).join('');
-    }
+    }).join('');
+  }
 
-    // Render Events
-    const eventsContainer = document.getElementById('events-list');
-    if (eventsContainer) {
-      eventsContainer.innerHTML = CONFIG.events.map(e => `
+  // Render Events
+  const eventsContainer = document.getElementById('events-list');
+  if (eventsContainer) {
+    eventsContainer.innerHTML = CONFIG.events.map(e => `
       <div class="card event-card">
         <div style="font-size: 2.5rem; margin-bottom: 1rem;">${e.icon}</div>
         <div>
@@ -208,53 +206,53 @@ function render() {
         </div>
       </div>
     `).join('');
-    }
-
-    // Render Contact Info
-    document.getElementById('address-display').textContent = CONFIG.business.address;
-    document.getElementById('directions-btn').href = CONFIG.business.mapLink;
-
-    // Render Footer Info
-    document.getElementById('footer-phone-link').textContent = CONFIG.business.phone;
-    document.getElementById('footer-phone-link').href = `tel:+${CONFIG.business.phoneClean}`;
-    document.getElementById('footer-address').textContent = CONFIG.business.address;
-    document.getElementById('footer-fb').href = CONFIG.business.facebook;
   }
 
-  // Mobile Interaction Logic
-  function initMobileInteractions() {
-    const menuBtn = document.getElementById('btn-menu');
-    const closeBtn = document.getElementById('btn-close');
-    const overlay = document.getElementById('menu-overlay');
-    const menuLinks = document.querySelectorAll('.menu-link');
+  // Render Contact Info
+  document.getElementById('address-display').textContent = CONFIG.business.address;
+  document.getElementById('directions-btn').href = CONFIG.business.mapLink;
 
-    function openMenu() {
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
+  // Render Footer Info
+  document.getElementById('footer-phone-link').textContent = CONFIG.business.phone;
+  document.getElementById('footer-phone-link').href = `tel:+${CONFIG.business.phoneClean}`;
+  document.getElementById('footer-address').textContent = CONFIG.business.address;
+  document.getElementById('footer-fb').href = CONFIG.business.facebook;
+}
 
-    function closeMenu() {
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
+// Mobile Interaction Logic
+function initMobileInteractions() {
+  const menuBtn = document.getElementById('btn-menu');
+  const closeBtn = document.getElementById('btn-close');
+  const overlay = document.getElementById('menu-overlay');
+  const menuLinks = document.querySelectorAll('.menu-link');
 
-    menuBtn?.addEventListener('click', openMenu);
-    closeBtn?.addEventListener('click', closeMenu);
-
-    menuLinks.forEach(link => {
-      link.addEventListener('click', closeMenu);
-    });
+  function openMenu() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
 
-  // Map Lazy Loading
-  function initMap() {
-    const mapContainer = document.getElementById('map-embed');
-    if (!mapContainer) return;
+  function closeMenu() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          mapContainer.innerHTML = `
+  menuBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+
+  menuLinks.forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+}
+
+// Map Lazy Loading
+function initMap() {
+  const mapContainer = document.getElementById('map-embed');
+  if (!mapContainer) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        mapContainer.innerHTML = `
           <iframe 
             class="map-frame"
             src="https://maps.google.com/maps?q=2680%20Acadie%20Rd%2C%20Cap-Pel%C3%A9%2C%20NB&t=&z=15&ie=UTF8&iwloc=&output=embed" 
@@ -262,143 +260,143 @@ function render() {
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>`;
-          observer.disconnect();
-        }
-      });
-    }, { rootMargin: "200px" });
-
-    observer.observe(mapContainer);
-  }
-
-  // Smart Menu Spy
-  // Smart Menu Spy
-  function scrollToCategory(id) {
-    if (id === 'all') {
-      const menu = document.getElementById('menu-grid');
-      if (menu) {
-        const top = menu.getBoundingClientRect().top + window.scrollY - 140;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        observer.disconnect();
       }
-      return;
+    });
+  }, { rootMargin: "200px" });
+
+  observer.observe(mapContainer);
+}
+
+// Smart Menu Spy
+// Smart Menu Spy
+function scrollToCategory(id) {
+  if (id === 'all') {
+    const menu = document.getElementById('menu-grid');
+    if (menu) {
+      const top = menu.getBoundingClientRect().top + window.scrollY - 140;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     }
-    const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
+    return;
   }
-
-  function scrollNav(direction) {
-    const container = document.getElementById('menu-pills-container');
-    if (container) {
-      const scrollAmount = 200;
-      container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
-    }
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
   }
+}
 
-  function initMenuScrollSpy() {
-    const cats = document.querySelectorAll('.menu-category');
-    const pills = document.querySelectorAll('.menu-pill');
-    if (!cats.length) return;
+function scrollNav(direction) {
+  const container = document.getElementById('menu-pills-container');
+  if (container) {
+    const scrollAmount = 200;
+    container.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+  }
+}
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Remove active from all
-          pills.forEach(p => p.classList.remove('active'));
+function initMenuScrollSpy() {
+  const cats = document.querySelectorAll('.menu-category');
+  const pills = document.querySelectorAll('.menu-pill');
+  if (!cats.length) return;
 
-          // Add to current
-          const id = entry.target.id.replace('cat-', 'nav-');
-          const activePill = document.getElementById(id);
-          if (activePill) {
-            activePill.classList.add('active');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Remove active from all
+        pills.forEach(p => p.classList.remove('active'));
 
-            // Auto-scroll the nav bar to keep pill in view
-            activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-          }
+        // Add to current
+        const id = entry.target.id.replace('cat-', 'nav-');
+        const activePill = document.getElementById(id);
+        if (activePill) {
+          activePill.classList.add('active');
+
+          // Auto-scroll the nav bar to keep pill in view
+          activePill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
-      });
-    }, { rootMargin: "-15% 0px -75% 0px", threshold: 0 }); // Trigger when section is near top
+      }
+    });
+  }, { rootMargin: "-15% 0px -75% 0px", threshold: 0 }); // Trigger when section is near top
 
-    cats.forEach(cat => observer.observe(cat));
+  cats.forEach(cat => observer.observe(cat));
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Initial Render with Static Data (Fast Load)
+  render();
+  initMobileInteractions();
+  initMenuScrollSpy();
+  initMap();
+
+  // 2. Fetch Dynamic Data from CMS
+  if (typeof firebase !== 'undefined') {
+    initRealtimeContent();
   }
+});
 
-  // Initialize
-  document.addEventListener('DOMContentLoaded', () => {
-    // 1. Initial Render with Static Data (Fast Load)
-    render();
-    initMobileInteractions();
-    initMenuScrollSpy();
-    initMap();
+function initRealtimeContent() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCiyM9S9g-4qbf_u59ZKgpGZ3lvI5a1bMk",
+    authDomain: "resto-577-cms.firebaseapp.com",
+    projectId: "resto-577-cms",
+    storageBucket: "resto-577-cms.firebasestorage.app",
+    messagingSenderId: "937770745854",
+    appId: "1:937770745854:web:bbe3cf5d2c720b46340aaf"
+  };
 
-    // 2. Fetch Dynamic Data from CMS
-    if (typeof firebase !== 'undefined') {
-      initRealtimeContent();
-    }
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  // Live Menu Updates
+  db.collection("menu").onSnapshot(snapshot => {
+    // if (snapshot.empty) return; // REMOVED BACKUP CHECK
+
+    const items = snapshot.docs.map(doc => doc.data());
+
+    // Group by category string
+    const grouped = {};
+    items.forEach(item => {
+      if (!grouped[item.category]) grouped[item.category] = [];
+      grouped[item.category].push(item);
+    });
+
+    // Reconstruct CONFIG.menu structure
+    // We strictly follow the Static Category Order for UI consistency, or just append new ones
+
+    // Helper to get order index from original static config if possible
+    const staticOrder = [
+      "Getting Started / Pour Commencer",
+      "Bowls / Bols",
+      "Tacos",
+      "Poutines",
+      "Salads / Salades",
+      "Burgers & Sandwiches",
+      "Baskets 'N' Platters",
+      "Throwback Favourites",
+      "Kids' Menu",
+      "Sides & Extras"
+    ];
+
+    const newMenu = Object.keys(grouped).map(catName => {
+      return {
+        category: catName,
+        items: grouped[catName]
+      };
+    }).sort((a, b) => {
+      const ia = staticOrder.findIndex(s => a.category.includes(s.split('/')[0].trim()));
+      const ib = staticOrder.findIndex(s => b.category.includes(s.split('/')[0].trim()));
+      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+    });
+
+    CONFIG.menu = newMenu;
+    render(); // Re-render with new data
+    initMenuScrollSpy(); // Re-init listeners
   });
 
-  function initRealtimeContent() {
-    const firebaseConfig = {
-      apiKey: "AIzaSyCiyM9S9g-4qbf_u59ZKgpGZ3lvI5a1bMk",
-      authDomain: "resto-577-cms.firebaseapp.com",
-      projectId: "resto-577-cms",
-      storageBucket: "resto-577-cms.firebasestorage.app",
-      messagingSenderId: "937770745854",
-      appId: "1:937770745854:web:bbe3cf5d2c720b46340aaf"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // Live Menu Updates
-    db.collection("menu").onSnapshot(snapshot => {
-      // if (snapshot.empty) return; // REMOVED BACKUP CHECK
-
-      const items = snapshot.docs.map(doc => doc.data());
-
-      // Group by category string
-      const grouped = {};
-      items.forEach(item => {
-        if (!grouped[item.category]) grouped[item.category] = [];
-        grouped[item.category].push(item);
-      });
-
-      // Reconstruct CONFIG.menu structure
-      // We strictly follow the Static Category Order for UI consistency, or just append new ones
-
-      // Helper to get order index from original static config if possible
-      const staticOrder = [
-        "Getting Started / Pour Commencer",
-        "Bowls / Bols",
-        "Tacos",
-        "Poutines",
-        "Salads / Salades",
-        "Burgers & Sandwiches",
-        "Baskets 'N' Platters",
-        "Throwback Favourites",
-        "Kids' Menu",
-        "Sides & Extras"
-      ];
-
-      const newMenu = Object.keys(grouped).map(catName => {
-        return {
-          category: catName,
-          items: grouped[catName]
-        };
-      }).sort((a, b) => {
-        const ia = staticOrder.findIndex(s => a.category.includes(s.split('/')[0].trim()));
-        const ib = staticOrder.findIndex(s => b.category.includes(s.split('/')[0].trim()));
-        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-      });
-
-      CONFIG.menu = newMenu;
-      render(); // Re-render with new data
-      initMenuScrollSpy(); // Re-init listeners
-    });
-
-    // Live Event Updates
-    db.collection("events").onSnapshot(snapshot => {
-      // if (snapshot.empty) return;
-      CONFIG.events = snapshot.docs.map(doc => doc.data());
-      render();
-    });
-  }
+  // Live Event Updates
+  db.collection("events").onSnapshot(snapshot => {
+    // if (snapshot.empty) return;
+    CONFIG.events = snapshot.docs.map(doc => doc.data());
+    render();
+  });
+}
