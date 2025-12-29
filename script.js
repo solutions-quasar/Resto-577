@@ -349,48 +349,58 @@ function initRealtimeContent() {
 
   // Live Menu Updates
   db.collection("menu").onSnapshot(snapshot => {
-    // if (snapshot.empty) return; // REMOVED BACKUP CHECK
+    try {
+      console.log("Firestore Update: Received " + snapshot.size + " items.");
+      const items = snapshot.docs.map(doc => {
+        const data = doc.data();
+        return {
+          ...data,
+          category: data.category || "Uncategorized", // Fallback for missing category
+          name: data.name || "Unknown Item"
+        };
+      });
 
-    const items = snapshot.docs.map(doc => doc.data());
+      // Group by category string
+      const grouped = {};
+      items.forEach(item => {
+        if (!grouped[item.category]) grouped[item.category] = [];
+        grouped[item.category].push(item);
+      });
 
-    // Group by category string
-    const grouped = {};
-    items.forEach(item => {
-      if (!grouped[item.category]) grouped[item.category] = [];
-      grouped[item.category].push(item);
-    });
+      // Reconstruct CONFIG.menu structure
+      const staticOrder = [
+        "Getting Started / Pour Commencer",
+        "Bowls / Bols",
+        "Tacos",
+        "Poutines",
+        "Salads / Salades",
+        "Burgers & Sandwiches",
+        "Baskets 'N' Platters",
+        "Throwback Favourites",
+        "Kids' Menu",
+        "Sides & Extras"
+      ];
 
-    // Reconstruct CONFIG.menu structure
-    // We strictly follow the Static Category Order for UI consistency, or just append new ones
+      const newMenu = Object.keys(grouped).map(catName => {
+        return {
+          category: catName,
+          items: grouped[catName]
+        };
+      }).sort((a, b) => {
+        const catA = String(a.category || "");
+        const catB = String(b.category || "");
+        const ia = staticOrder.findIndex(s => catA.includes(s.split('/')[0].trim()));
+        const ib = staticOrder.findIndex(s => catB.includes(s.split('/')[0].trim()));
+        return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
+      });
 
-    // Helper to get order index from original static config if possible
-    const staticOrder = [
-      "Getting Started / Pour Commencer",
-      "Bowls / Bols",
-      "Tacos",
-      "Poutines",
-      "Salads / Salades",
-      "Burgers & Sandwiches",
-      "Baskets 'N' Platters",
-      "Throwback Favourites",
-      "Kids' Menu",
-      "Sides & Extras"
-    ];
-
-    const newMenu = Object.keys(grouped).map(catName => {
-      return {
-        category: catName,
-        items: grouped[catName]
-      };
-    }).sort((a, b) => {
-      const ia = staticOrder.findIndex(s => a.category.includes(s.split('/')[0].trim()));
-      const ib = staticOrder.findIndex(s => b.category.includes(s.split('/')[0].trim()));
-      return (ia === -1 ? 99 : ia) - (ib === -1 ? 99 : ib);
-    });
-
-    CONFIG.menu = newMenu;
-    render(); // Re-render with new data
-    initMenuScrollSpy(); // Re-init listeners
+      CONFIG.menu = newMenu;
+      console.log("Render: Updating menu with " + newMenu.length + " categories.");
+      render(); // Re-render with new data
+      initMenuScrollSpy(); // Re-init listeners
+    } catch (error) {
+      console.error("Error processing menu data:", error);
+    }
   });
 
   // Live Event Updates
