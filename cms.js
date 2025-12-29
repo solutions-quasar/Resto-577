@@ -241,25 +241,182 @@ function showToast(msg, duration = 3000) {
 }
 
 // SEEDER
+// SEEDER
 function seedDatabase() {
-    if (!confirm("This will upload all items from script.js to Firebase. Do this only once! Continue?")) return;
+    if (!confirm("This will upload all items from the backup to Firebase. Do this only once! Continue?")) return;
 
+    const SEED_MENU = [
+        {
+            category: "Getting Started / Pour Commencer",
+            items: [
+                { name: "Deep-Fried Pickles", price: "$10", desc: "Served with honey dill sauce." },
+                { name: "Sweet Potato Fries", price: "$10", desc: "Served with chipotle sauce." },
+                { name: "Fries", price: "$7", desc: "Classic golden fries." },
+                { name: "Deep Fried Mushrooms", price: "$10", desc: "Served with ranch dressing." },
+                { name: "Bacon-Wrapped Scallops (8)", price: "$16", desc: "Delicious scallops wrapped in crispy bacon." },
+                { name: "Thai Chicken Bites", price: "$16", desc: "Sweet chili sauce, crispy wontons, and fresh cucumber." },
+                { name: "Crispy Chicken Chunks", price: "$14", desc: "Served with choice of dipping sauce." },
+                { name: "Fried Onion Rings", price: "$12", desc: "Golden and crispy." },
+                { name: "Mozza Sticks", price: "$12", desc: "Served with marinara sauce." },
+                { name: "Mac & Cheese Wedges", price: "$12", desc: "Served with marinara sauce." },
+                { name: "Chicken Wings", price: "8-$15 | 16-$24 | 24-$32", desc: "Crispy breaded. Sauces: Honey Garlic, BBQ, Mild, Buffalo, Thai, Maple Thai." },
+                { name: "Chicken Quesadilla", price: "$15", desc: "Grilled tortilla with chicken, pico de gallo, cheese. Served with salsa and sour cream." },
+                { name: "Crab or Lobster Quesadilla", price: "$20", desc: "Grilled tortilla with crab or lobster, pico de gallo, chipotle sauce, cheese. Served with salsa and sour cream." },
+                { name: "Crab Rangoons", price: "$15", desc: "6 golden wontons stuffed with crab and cream cheese filling, garnished with Thai drizzle." },
+                { name: "BBQ Chicken Nachos", price: "$18", desc: "Tortilla chips, chicken, pico de gallo, green onions, cheese blend, BBQ sauce, ranch dressing." },
+                {
+                    name: "Taco Nachos",
+                    price: "$18",
+                    desc: "Tortilla chips, ground beef, pico de gallo, cheese blend. Served with salsa and sour cream.",
+                    image: "./assets/nachos.jpg"
+                }
+            ]
+        },
+        {
+            category: "Bowls / Bols",
+            items: [
+                { name: "Seafood Chowder", price: "$18", desc: "Fresh lobster, scallops, and shrimps." }
+            ]
+        },
+        {
+            category: "Tacos (2 - $14 | 3 - $19)",
+            items: [
+                { name: "Crispy Chicken Tacos", price: "$14 / $19", desc: "Coleslaw, cheese blend, tomatoes, onions, peppers, ranch or caesar." },
+                {
+                    name: "Crispy Fish or Shrimp Tacos",
+                    price: "$14 / $19",
+                    desc: "Lettuce, corn salsa, chipotle mayo.",
+                    image: "./assets/tacos.jpg"
+                }
+            ]
+        },
+        {
+            category: "Poutines",
+            items: [
+                { name: "Classic Poutine", price: "$13", desc: "Cheese blend and our famous gravy." },
+                { name: "Mushroom Poutine", price: "$14", desc: "Deep-fried mushrooms, cheese, gravy." },
+                {
+                    name: "Bacon Cheeseburger Poutine",
+                    price: "$17",
+                    desc: "Ground beef, bacon, onions, cheese blend, gravy.",
+                    image: "./assets/poutine.jpg"
+                },
+                {
+                    name: "BBQ Chicken Poutine",
+                    price: "$17",
+                    desc: "Crispy boneless chicken, cheese blend, green onions, BBQ & ranch sauce.",
+                    image: "./assets/bbq_poutine.jpg"
+                },
+                { name: "Seafood Poutine", price: "$25", desc: "Shrimps, scallops, lobster meat, cheese blend, special cheese sauce." }
+            ]
+        },
+        {
+            category: "Salads / Salades (Add Chicken/Shrimp +$7)",
+            items: [
+                { name: "Classic Caesar", price: "Side $12 | Meal $15", desc: "Romaine, bacon, croutons, parmesan, creamy caesar dressing." },
+                { name: "House Salad", price: "Side $12 | Meal $15", desc: "Field greens, veggies, cheddar cheese blend, choice of dressing." },
+                { name: "Greek Salad", price: "Side $12 | Meal $15", desc: "Lettuce, feta, tomatoes, peppers, cucumbers, olives, red onions, Greek dressing." }
+            ]
+        },
+        {
+            category: "Burgers & Sandwiches (Served with fries & coleslaw)",
+            items: [
+                { name: "Bacon Cheddar Burger", price: "$18", desc: "Bacon, cheddar, lettuce, tomato, pickles, house sauce." },
+                { name: "Classic Cheeseburger", price: "$16", desc: "Cheddar cheese and ketchup." },
+                {
+                    name: "BBQ Chicken Burger",
+                    price: "$18",
+                    desc: "Crispy or grilled breast, BBQ sauce, cheddar, bacon, lettuce, tomato, ranch.",
+                    image: "./assets/burger.jpg"
+                },
+                { name: "Crispy Chicken Wrap", price: "$16", desc: "Breaded tenders, wing sauce, lettuce, tomato, onions, cheddar." },
+                { name: "Chicken Caesar Wrap", price: "$16", desc: "Grilled or crispy chicken, romaine, bacon, parmesan, creamy caesar." },
+                { name: "Fish Burger", price: "$18", desc: "Crispy breaded fish, lettuce, tartar sauce." },
+                { name: "Scallop Burger", price: "$18", desc: "Five golden fried scallops, lettuce, tomato, tartar sauce." },
+                {
+                    name: "Lobster Roll",
+                    price: "$23",
+                    desc: "Chilled lobster meat with mayo, lightly seasoned on a grilled bun.",
+                    image: "./assets/lobster_roll.jpg"
+                },
+                { name: "Crab Roll", price: "$23", desc: "Chilled crab meat with mayo, lightly seasoned on a grilled bun." },
+                { name: "Triple-Decker Club", price: "$17", desc: "Chicken, bacon, lettuce, tomato, mayo on toasted bread." },
+                { name: "Lobster Club", price: "$25", desc: "Lobster meat with mayo, bacon, lettuce, tomato." },
+                { name: "Christine's Signature Crab Club", price: "$25", desc: "Crab meat with mayo, bacon, lettuce, tomato." }
+            ]
+        },
+        {
+            category: "Baskets 'N' Platters / Plats et Paniers",
+            items: [
+                { name: "Fried Clams / Bar Clams", price: "Sm $25 | Lg $29", desc: "Lightly breaded and fried. (Clams only: Sm $22 | Lg $26)" },
+                { name: "Seafood Casserole", price: "$26", desc: "Seafood medley in rich creamy cheese sauce." },
+                { name: "Seafood Platter", price: "$34", desc: "Fried clams, fish, shrimps, scallops." },
+                { name: "Bacon-Wrapped Scallops", price: "$26", desc: "10 delicious bacon-wrapped scallops." },
+                { name: "Fried Scallops Platter", price: "$25", desc: "Plump scallops breaded and lightly fried." },
+                {
+                    name: "Fish & Chips",
+                    price: "1pc $14 | 2pc $18 | 3pc $20",
+                    desc: "Flaky white fish fillet in seasoned flour.",
+                    image: "./assets/fish_chips.png"
+                },
+                { name: "Maria Special", price: "$28", desc: "Lightly fried clams and fish." },
+                { name: "Crispy Fried Shrimps", price: "$20", desc: "Lightly fried shrimps." },
+                { name: "Chicken Tenders", price: "$18", desc: "5 breaded chicken tenders." },
+                { name: "Crispy Chicken Chunks", price: "$18", desc: "10 crispy chicken chunks." }
+            ]
+        },
+        {
+            category: "Throwback Favourites / Classiques Préférés",
+            items: [
+                { name: "Hot Chicken", price: "$16", desc: "Roasted chicken sandwich topped with gravy and peas." },
+                { name: "Hot Hamburger", price: "$18", desc: "10oz ground beef patty sandwich topped with gravy and peas." }
+            ]
+        },
+        {
+            category: "Kids' Menu / Menu Pour Enfants",
+            items: [
+                { name: "Popcorn Chicken", price: "$10", desc: "Served with fries and juice/milk." },
+                { name: "Grilled Cheese", price: "$9", desc: "Served with fries and juice/milk." },
+                { name: "1 Piece Fish & Chips", price: "$12", desc: "Served with fries and juice/milk." }
+            ]
+        },
+        {
+            category: "Sides & Extras",
+            items: [
+                { name: "Poutine Upgrade", price: "+$4", desc: "Replace fries with classic poutine." },
+                { name: "Sweet Potato Fries Upgrade", price: "+$2", desc: "Replace fries." },
+                { name: "Onion Rings Upgrade", price: "+$2", desc: "Replace fries." },
+                { name: "Gravy / Sauce", price: "$3 - $5", desc: "Small or Large." },
+                { name: "Coleslaw", price: "$4 - $6", desc: "Small or Large." }
+            ]
+        }
+    ];
+
+    const SEED_EVENTS = [
+        { title: "Wing Night", date: "Every Thursday", time: "4PM - Close", desc: "Enjoy our famous wings for just $0.99 each!", icon: "🍗" },
+        { title: "Live Music", date: "Friday & Saturday", time: "7PM - 10PM", desc: "Local artists performing acoustic classics.", icon: "🎵" },
+        { title: "Happy Hour", date: "Daily", time: "3PM - 6PM", desc: "$5 Drafts and half-price appetizers.", icon: "🍻" }
+    ];
+
+    let count = 0;
     // Seed Menu
-    CONFIG.menu.forEach(cat => {
+    SEED_MENU.forEach(cat => {
         cat.items.forEach(item => {
             db.collection("menu").add({
                 category: cat.category,
                 ...item
             });
+            count++;
         });
     });
 
     // Seed Events
-    CONFIG.events.forEach(evt => {
+    SEED_EVENTS.forEach(evt => {
         db.collection("events").add(evt);
+        count++;
     });
 
-    alert("Seed Complete!");
+    alert(`Seed Complete! Sent ${count} items to the database.`);
 }
 
 // Check auth state
